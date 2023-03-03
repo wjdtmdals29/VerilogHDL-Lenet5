@@ -1,4 +1,3 @@
 # VerilogHDL-Lenet5
 See sub.pdf
-
-한글이에요 대충끄적
+독학/학부/프로젝트/한국
