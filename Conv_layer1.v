@@ -46,7 +46,16 @@ assign w_we_bram1 = ce&&(~w_done_ifmap_bram_write);
 wire w_conv_ce;
 wire w_conv_rst;
 reg r_conv_end_d;
-
+	
+reg signed [I_BW-1:0] r_fmap;
+always@(posedge clk or negedge global_rst_n) begin
+    if(!global_rst_n) begin
+        r_fmap <= 0;
+    end
+    else if(ce) begin
+        r_fmap <= i_fmap;
+    end
+end
 always@(posedge clk)begin
   r_conv_end_d <= w_conv_end;
 end
