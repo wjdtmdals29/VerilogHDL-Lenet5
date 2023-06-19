@@ -23,9 +23,9 @@ output signed [O_BW-1:0] o_conv1_result;
 output o_convlayer1_en, o_convlayer1_ch_end, o_convlayer1_allch_end;
 
 wire [mem_ifmap_addr_width-1:0] w_addr_ifmap;
-wire [mem_ifmap_addr_width-1:0] w_addr_ofmap;
+//wire [mem_ifmap_addr_width-1:0] w_addr_ofmap;
 wire w_done_ifmap_bram_write;
-wire w_done_ofmap_bram_write;
+//wire w_done_ofmap_bram_write;
 wire signed [I_BW-1:0] w_o_fmap;
 wire signed [O_CONV_BW-1:0] w_conv_result;
 wire w_conv_valid;
@@ -35,9 +35,9 @@ wire w_conv_all_end;
 wire w_ce_cnt1;
 wire w_ce_bram1;
 wire w_we_bram1;
-wire signed [(CO*K_SIZE*K_SIZE*W_BW)-1:0] w_weight;
-wire w_empty;
-wire w_full;
+//wire signed [(CO*K_SIZE*K_SIZE*W_BW)-1:0] w_weight;
+//wire w_empty;
+//wire w_full;
 
 assign w_ce_cnt1 = ce&&(~w_conv_end)&&(~w_conv_all_end);
 assign w_ce_bram1 = ce&&(~(w_conv_end||w_conv_all_end));
@@ -46,16 +46,7 @@ assign w_we_bram1 = ce&&(~w_done_ifmap_bram_write);
 wire w_conv_ce;
 wire w_conv_rst;
 reg r_conv_end_d;
-	
-reg signed [I_BW-1:0] r_fmap;
-always@(posedge clk or negedge global_rst_n) begin
-    if(!global_rst_n) begin
-        r_fmap <= 0;
-    end
-    else if(ce) begin
-        r_fmap <= i_fmap;
-    end
-end
+
 always@(posedge clk)begin
   r_conv_end_d <= w_conv_end;
 end
@@ -77,7 +68,7 @@ assign w_conv_rst = w_conv_end||r_conv_end_d;
 
   ////////////////////////////////Instiation SPBRAM(single port bram) and address counter for bram////////////////////////////////
   //instantiation counter for SPBRAM 1
-  counter #(.BW(mem_ifmap_bit_width),.CNT_WIDTH(mem_ifmap_addr_width),.CNT_DEPTH(mem_ifmap_depth)) u_ifmap_bram_address_counter
+  counter1 #(.BW(mem_ifmap_bit_width),.CNT_WIDTH(mem_ifmap_addr_width),.CNT_DEPTH(mem_ifmap_depth)) u_ifmap_bram_address_counter
   (
     .clk(clk), .global_rst_n(global_rst_n), .rst(w_conv_end||rst_processEnd), .ce(w_ce_cnt1),
     .o_count(w_addr_ifmap), .o_done(w_done_ifmap_bram_write)
@@ -95,7 +86,7 @@ assign w_conv_rst = w_conv_end||r_conv_end_d;
 	convolution_55_layer1 #(.I_BW(I_BW),.O_CONV_BW(O_CONV_BW),.O_BW(O_BW),.I_SIZE(I_SIZE),.K_SIZE(K_SIZE),.W_BW(W_BW),.CO(CO)) 
     u_convolution_55
     (
-      .clk(clk), .ce(w_conv_ce), .global_rst_n(global_rst_n), .rst(w_conv_rst), .self_rst(w_conv_end||rst_processEnd),
+      .clk(clk), .ce(w_conv_ce), .global_rst_n(global_rst_n), .rst(w_conv_rst), .self_rst(w_conv_end||rst_processEnd), .rst_processEnd(rst_processEnd),
       .i_fmap(w_o_fmap), .i_weight(i_weight),
       .o_conv_result(w_conv_result),
       .o_conv_valid(w_conv_valid),.o_conv_end(w_conv_end),.o_conv_all_end(w_conv_all_end)
