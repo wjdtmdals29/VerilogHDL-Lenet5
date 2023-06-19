@@ -6,11 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <iostream>
-#include <chrono>
-using namespace std;
-using namespace chrono;
-
 #define MAX 1000000
 #define max(x, y) (x) > (y) ? (x) : (y)
 
@@ -100,6 +95,8 @@ static int relu(int x)
 
 int main()
 { 
+  struct timespec  begin, end;
+  double tmpValue = 0.0;
 	signed int i, m, n, p, q, j, b;
 	signed int out1[och1][ochsize1][ochsize1];
 	signed int out1_relu[och1][ochsize1][ochsize1];
@@ -132,6 +129,8 @@ int main()
   FILE *fp_weight2_ch4;
   FILE *fp_weight_fc;
   FILE *fp_bias_fc;
+  srand(time(NULL));
+  signed int random;
   ////////////////////////////Generate random values////////////////////////////
   ////////////////////////////And save mem file////////////////////////////
 
@@ -467,8 +466,8 @@ int main()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////Real values////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-system_clock::time_point start = system_clock::now();
-fp_fmap = fopen("SW_test_num8_1.txt", "r");
+clock_gettime(CLOCK_MONOTONIC, &begin);
+fp_fmap = fopen("SW_test_num6_1.txt", "r");
 	for (i = 0; i < ich1; i++) {
 		for (m = 0; m < ichsize1; m++) {
 			for (n = 0; n < ichsize1; n++) {
@@ -521,7 +520,6 @@ fp_weight2 = fopen("SW_conv2_weight.txt", "r");
 	////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////  Convolution layer1  /////////////////////
-  ///////////////////// Convolution1 /////////////////////
 	for (i = 0; i < ich1; i++) {
 		for (m = 0; m < ochsize1; m++) {
 			for (n = 0; n < ochsize1; n++) {
@@ -532,6 +530,15 @@ fp_weight2 = fopen("SW_conv2_weight.txt", "r");
 						}
 					}
 				}
+			}
+		}
+	}
+	for (j = 0; j < och1; j++) {
+		//printf("\n\nout1 channel%d\n", j);
+		for (m = 0; m < ochsize1; m++) {
+			//printf("\n");
+			for (n = 0; n < ochsize1; n++) {
+				//printf("%d ", out1[j][m][n]);
 			}
 		}
 	}
@@ -650,12 +657,10 @@ fp_weight2 = fopen("SW_conv2_weight.txt", "r");
   }
   result = Max_class(out3_relu[0],out3_relu[1],out3_relu[2],out3_relu[3],
   out3_relu[4],out3_relu[5],out3_relu[6],out3_relu[7],out3_relu[8],out3_relu[9]);
-  cout << "[Final result = " << result << " ]\n" << endl;
-  //printf("\n[Final result = %d]\n",result);
-  system_clock::time_point end = system_clock::now();
-  nanoseconds nano = end - start;
-
-  cout << "[processing time = " << nano.count() << "(ns)]\n" << endl;
-  
+  printf("\n[Final result = %d]\n",result);
+  clock_gettime(CLOCK_MONOTONIC, &end);
+  printf("Value: %lf\n", tmpValue);
+  long time = (end.tv_sec - begin.tv_sec) + (end.tv_nsec - begin.tv_nsec);
+  printf("Time (Milli): %lf\n", (double)time/1000000);
 	return 0;
 }

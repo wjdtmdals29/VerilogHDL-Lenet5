@@ -158,4 +158,3 @@ assign o_convlayer2_en = w_o_max_valid;
 assign o_convlayer2_ch_end = w_o_max_end;
 assign o_convlayer2_allch_end = w_conv_all_end[0]&&w_conv_all_end[1]&&w_conv_all_end[2]&&w_conv_all_end[3];
 endmodule
-
