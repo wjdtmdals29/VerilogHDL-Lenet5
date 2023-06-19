@@ -6,7 +6,7 @@
 `timescale 1ns / 1ps
 module convolution_55_layer1 #(parameter I_BW = 8, O_CONV_BW = 20, O_BW = 16, I_SIZE = 28, K_SIZE = 5, W_BW = 8, CI = 1, CO = 4)
   (
-  clk, ce, global_rst_n, rst, self_rst,
+  clk, ce, global_rst_n, rst, self_rst, rst_processEnd,
   i_fmap, i_weight,
   o_conv_result,
   o_conv_valid, o_conv_end, o_conv_all_end
@@ -16,7 +16,7 @@ module convolution_55_layer1 #(parameter I_BW = 8, O_CONV_BW = 20, O_BW = 16, I_
 localparam s = 1;
 localparam cnt_channel_width = clog2(CO);
 
-input                                        clk, ce, global_rst_n,rst, self_rst;
+input                                        clk, ce, global_rst_n,rst, self_rst, rst_processEnd;
 input signed      [I_BW-1:0]                 i_fmap;
 input signed      [CO*(K_SIZE*K_SIZE)*W_BW-1:0] i_weight;
 output signed     [O_CONV_BW-1:0]              o_conv_result;
