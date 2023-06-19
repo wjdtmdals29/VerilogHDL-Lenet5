@@ -94,7 +94,7 @@ wire w_ce_conv[0:CI-1];
 generate
   for(k=0;k<CI;k=k+1) begin
     assign w_weight[k][CO*K_SIZE*K_SIZE*W_BW-1:0] = i_weight[k*CO*K_SIZE*K_SIZE*W_BW +: CO*K_SIZE*K_SIZE*W_BW];
-  counter #(.BW(mem_ifmap_bit_width),.CNT_WIDTH(mem_ifmap_addr_width),.CNT_DEPTH(mem_ifmap_depth)) u_ifmap_bram_address_counter
+  counter2 #(.BW(mem_ifmap_bit_width),.CNT_WIDTH(mem_ifmap_addr_width),.CNT_DEPTH(mem_ifmap_depth)) u_ifmap_bram_address_counter
   (
     .clk(clk), .global_rst_n(global_rst_n), .rst(rst_processEnd||w_conv_end[k]), .ce(((ce&&r_ce_sel_bram[k])||bram_read_en_d)&&(~w_conv_end[k])&&(~w_conv_all_end[k])),
     .o_count(w_addr_ifmap[k]), .o_done(w_done_ifmap_bram_write[k])
@@ -158,3 +158,4 @@ assign o_convlayer2_en = w_o_max_valid;
 assign o_convlayer2_ch_end = w_o_max_end;
 assign o_convlayer2_allch_end = w_conv_all_end[0]&&w_conv_all_end[1]&&w_conv_all_end[2]&&w_conv_all_end[3];
 endmodule
+
