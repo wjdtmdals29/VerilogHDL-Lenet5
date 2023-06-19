@@ -468,7 +468,7 @@ int main()
 ////////////////////////////////////////////////////////////////Real values////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 system_clock::time_point start = system_clock::now();
-fp_fmap = fopen("SW_test_num9_1.txt", "r");
+fp_fmap = fopen("SW_test_num8_1.txt", "r");
 	for (i = 0; i < ich1; i++) {
 		for (m = 0; m < ichsize1; m++) {
 			for (n = 0; n < ichsize1; n++) {
@@ -521,7 +521,7 @@ fp_weight2 = fopen("SW_conv2_weight.txt", "r");
 	////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////  Convolution layer1  /////////////////////
-  
+  ///////////////////// Convolution1 /////////////////////
 	for (i = 0; i < ich1; i++) {
 		for (m = 0; m < ochsize1; m++) {
 			for (n = 0; n < ochsize1; n++) {
@@ -532,15 +532,6 @@ fp_weight2 = fopen("SW_conv2_weight.txt", "r");
 						}
 					}
 				}
-			}
-		}
-	}
-	for (j = 0; j < och1; j++) {
-		//printf("\n\nout1 channel%d\n", j);
-		for (m = 0; m < ochsize1; m++) {
-			//printf("\n");
-			for (n = 0; n < ochsize1; n++) {
-				//printf("%d ", out1[j][m][n]);
 			}
 		}
 	}
