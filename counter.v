@@ -4,7 +4,7 @@
 #Revision History: 2023.03.03
 *******************************************************************************/
 `timescale 1ns / 1ps
-module counter #(parameter BW = 8, CNT_WIDTH = 4, CNT_DEPTH = 16)
+module counter1 #(parameter BW = 8, CNT_WIDTH = 4, CNT_DEPTH = 16)
 (
   clk, global_rst_n, rst, ce,
   o_count, o_done
